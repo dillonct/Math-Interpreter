@@ -17,7 +17,9 @@ impl<'a> Parser<'a> {
 
     pub fn parse_computation(&mut self) -> i32 {
         let computation = self.parse_expression();
-        self.match_token(Token::EOL);
+        let test = self.token.peek_token();
+        println!("{:?}", test);
+        self.match_token(Token::EOC);
 
         computation
     }

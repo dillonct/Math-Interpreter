@@ -12,7 +12,7 @@ pub enum Token {
     Openpar,
     Closepar,
     Semicolon,
-    EOL,
+    EOC,
 }
 
 pub struct Tokenizer<'a> {
@@ -40,7 +40,7 @@ impl<'a> Tokenizer<'a> {
             '(' => { self.next_char(); Token::Openpar },
             ')' => { self.next_char(); Token::Closepar },
             ';' => { self.next_char(); Token::Semicolon },
-            '.' => { self.next_char(); Token::EOL },
+            '.' => { self.next_char(); Token::EOC },
             '<' => {
                 self.next_char();
                 if self.peek_char() == '-' {
@@ -134,18 +134,18 @@ impl<'a> Tokenizer<'a> {
     }
 }
 
-/*
+
 fn main() {
-    let input = String::from("hello + - * / 53      <- ( ) var computation");
+    let input = String::from("hello + - * / 53      <- ( ) var computation.");
     let mut idk = Tokenizer::new(&input);
     let mut i = 0;
     loop {
         let token = idk.next_token();
         println!("{}: {:?}", i, token);
         i += 1;
-        if token == Token::EOL {
+        if token == Token::EOC {
             break;
         }        
 
     }
-}*/
+}
