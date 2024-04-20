@@ -26,8 +26,8 @@ impl<'a> Parser<'a> {
 
     fn parse_variables(&mut self) {
         loop {
-            match self.token.next_token() {
-                Token::Variable => self.parse_assignment(),
+            match self.token.peek_token() {
+                Token::Variable => { self.token.next_token(); self.parse_assignment() },
                 _ => break,
             }
         }
@@ -38,7 +38,6 @@ impl<'a> Parser<'a> {
             Token::Identifier(string) => {
                 self.match_token(Token::Assignment);
                 let value = self.parse_expression();
-                println!("{}", value);
                 self.identifier_table.insert(string, value);
                 self.match_token(Token::Semicolon);
             },
@@ -93,10 +92,11 @@ impl<'a> Parser<'a> {
 
     fn parse_factor(&mut self) -> i32 {
         let value: i32;
+        
+        let token1 = self.token.peek_token();
+        println!("james is praying on my downfall: {:?}", token1);
 
-        let token = self.token.peek_token();
-
-        match token {
+        match self.token.peek_token() {
             Token::Identifier(name) => {
                 self.token.next_token();
                 value = *self.identifier_table.get(&name).expect("Variable does not exist");

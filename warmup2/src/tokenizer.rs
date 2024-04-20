@@ -43,7 +43,7 @@ impl<'a> Tokenizer<'a> {
             '.' => { self.next_char(); Token::EOC },
             '<' => {
                 self.next_char();
-                if self.peek_char() == '-' {
+                if self.next_char() == '-' {
                     Token::Assignment
                 } else {
                     panic!("Assignment error");
@@ -131,6 +131,19 @@ impl<'a> Tokenizer<'a> {
                 _ => break,
             }
         }
+    }
+}
+
+fn main() {
+
+    let mut tokenizer = Tokenizer::new("computation var i<-2; i+1.");
+    loop {
+        let token = tokenizer.next_token();
+        println!("{:?}", token);
+        if token == Token::EOC {
+            break;
+        }
+
     }
 }
 
