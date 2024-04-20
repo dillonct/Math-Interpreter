@@ -27,6 +27,7 @@ impl<'a> Parser<'a> {
     fn parse_expression(&mut self) -> i32 {
         let mut value = self.parse_term();
         loop {
+            println!("sdfsfdsf");
             let token = self.token.peek_token();
             match token {
                 Token::Plus => {
