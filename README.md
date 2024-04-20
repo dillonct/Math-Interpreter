@@ -4,6 +4,6 @@ A simple interpreter that recursively parses arithmetic integer expressions with
 ```1  +2  *(3+4).7 * 6.```  prints **15** and **42**
 
 ## Warmup 2
-An interpreter that extends upon warmup 1 with variables and separates the parser and tokenizer operations. A computation starts with the keyword "computation" followed by variable declarations and expressions and ends with a period.
+An interpreter that extends upon warmup 1 with variables and separates parsing and tokenizing the input. A computation starts with the keyword "computation" followed by variable declarations and expressions and ends with a period.
 
 ```computation var x <- 2 * 3; var y <- 7; (((y * x))); i-5-1.```  prints **42** and **0**
