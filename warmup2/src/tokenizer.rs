@@ -80,38 +80,32 @@ impl<'a> Tokenizer<'a> {
     }
 
     fn consume_identifier(&mut self) -> String {
-        let mut string = String::new();
-        loop {
-            let c = self.input.chars().nth(self.index).unwrap_or('\0');
-            if c == ' ' || c == '.' || c == '\0' || !c.is_alphanumeric() {
-                break;
-            } 
+        let start_index = self.index;
+        // NOTE: there's a slight more way to shorten this, but might decrease readability?
+        let mut c = self.peek_char();
 
-            string.push(c);
+        while c.is_ascii_alphanumeric() {
             self.index += 1;
+            c = self.peek_char();
+
         }
 
-        self.skip_whitespace();
-
-        string
+        self.input[start_index..self.index].to_string()
     }
 
     fn consume_number(&mut self) -> String {
-        let mut string = String::new();
-        loop {
-            let c = self.input.chars().nth(self.index).unwrap_or('\0');
-            if c == ' ' || c == '.' || c == '\0' || !c.is_numeric() {
-                break;
-            } 
+        let start_index = self.index;
+        let mut c = self.peek_char();
 
-            string.push(c);
+        while c.is_ascii_digit() {
             self.index += 1;
+            c = self.peek_char();
+
         }
 
-        self.skip_whitespace();
-
-        string
+        self.input[start_index..self.index].to_string()
     }
+
     fn get_identifier(&mut self) -> Token {
         let name = self.consume_identifier();
         match name.as_str() {
@@ -124,16 +118,14 @@ impl<'a> Tokenizer<'a> {
     fn get_number(&mut self) -> Token {
         let value = self.consume_number();
         
-        Token::Number(value.parse::<i32>().unwrap())
+        Token::Number(value.parse::<i32>().expect("Cannot unwrap Result in get_number()"))
     }
 
     fn skip_whitespace(&mut self) {
-        loop {
-            let c = self.peek_char();
-            match c {
-                ' ' => self.index += 1,
-                _ => break,
-            }
+        let mut c = self.peek_char();
+        while c.is_whitespace() {
+            self.index += 1;
+            c = self.peek_char();
         }
     }
 }
