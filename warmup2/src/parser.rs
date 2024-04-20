@@ -91,7 +91,11 @@ impl<'a> Parser<'a> {
                 Token::Divide => {
                     self.token.next_token();
                     value /= self.parse_factor();
-                }
+                },
+                Token::Remainder => {
+                    self.token.next_token();
+                    value %= self.parse_factor();
+                },
                 _ => {
                     break;
                 }

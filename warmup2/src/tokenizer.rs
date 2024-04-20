@@ -8,6 +8,7 @@ pub enum Token {
     Minus,
     Times,
     Divide,
+    Remainder,
     Assignment,
     Openpar,
     Closepar,
@@ -31,29 +32,32 @@ impl<'a> Tokenizer<'a> {
 
     pub fn next_token(&mut self) -> Token {
         self.skip_whitespace();
-        let c = self.peek_char();
-        match c {
-            '+' => { self.next_char(); Token::Plus },
-            '-' => { self.next_char(); Token::Minus },
-            '*' => { self.next_char(); Token::Times },
-            '/' => { self.next_char(); Token::Divide },
-            '(' => { self.next_char(); Token::Openpar },
-            ')' => { self.next_char(); Token::Closepar },
-            ';' => { self.next_char(); Token::Semicolon },
-            '.' => { self.next_char(); Token::EOC },
+
+        let ch = match self.peek_char() {
+            '+' => { Token::Plus },
+            '-' => { Token::Minus },
+            '*' => { Token::Times },
+            '%' => { Token::Remainder },
+            '/' => { Token::Divide },
+            '(' => { Token::Openpar },
+            ')' => { Token::Closepar },
+            ';' => { Token::Semicolon },
+            '.' => { Token::EOC },
             '<' => {
                 self.next_char();
-                if self.next_char() == '-' {
+                if self.peek_char() == '-' {
                     Token::Assignment
                 } else {
                     panic!("Assignment error");
                 }
             },
-            _ if c.is_alphabetic() => self.get_identifier(),
-            _ if c.is_numeric() => self.get_number(),
-            _ => panic!("Unexpected character: {}", c),
-        }
+            'a'..='z' | 'A'..='Z' => return self.get_identifier(),
+            '0'..='9' => return self.get_number(),
+            _ => panic!("Unexpected character"),
+        };
 
+        self.next_char();
+        ch
     }
 
     pub fn peek_token(&mut self) -> Token {
