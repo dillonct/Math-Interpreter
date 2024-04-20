@@ -34,15 +34,15 @@ impl<'a> Tokenizer<'a> {
         self.skip_whitespace();
 
         let ch = match self.peek_char() {
-            '+' => { Token::Plus },
-            '-' => { Token::Minus },
-            '*' => { Token::Times },
-            '%' => { Token::Remainder },
-            '/' => { Token::Divide },
-            '(' => { Token::Openpar },
-            ')' => { Token::Closepar },
-            ';' => { Token::Semicolon },
-            '.' => { Token::EOC },
+            '+' => Token::Plus,
+            '-' => Token::Minus,
+            '*' => Token::Times,
+            '%' => Token::Remainder,
+            '/' => Token::Divide,
+            '(' => Token::Openpar,
+            ')' => Token::Closepar,
+            ';' => Token::Semicolon,
+            '.' => Token::EOC,
             '<' => {
                 self.next_char();
                 if self.peek_char() == '-' {
@@ -53,7 +53,7 @@ impl<'a> Tokenizer<'a> {
             },
             'a'..='z' | 'A'..='Z' => return self.get_identifier(),
             '0'..='9' => return self.get_number(),
-            _ => panic!("Unexpected character"),
+            _ => panic!("Unexpected character to match token"),
         };
 
         self.next_char();
