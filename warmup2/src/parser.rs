@@ -15,35 +15,28 @@ impl<'a> Parser<'a> {
         }
     }
 
-    pub fn parse_computation(&mut self) -> i32 {
+    pub fn parse_computation(&mut self) {
         self.match_token(Token::Computation);
         self.parse_variables();
-        // let computation = self.parse_expression();
-        let computation = self.parse_multiple_expressions();
-        //self.match_token(Token::EOC);
-
-        computation
-    }
-
-    fn parse_multiple_expressions(&mut self) -> i32 {
-        let mut value = self.parse_expression();
-        println!("{}", value);
-
-        loop {
-            match self.token.peek_token() {
-                Token::Semicolon => { 
-                    self.token.next_token();
-                    value = self.parse_expression();
-                    println!("{}", value);
-                },
-                _ => break,
-            }
-
-        }
-
+        self.parse_multiple_expressions();
         self.match_token(Token::EOC);
 
-        value
+    
+    }
+
+    fn parse_multiple_expressions(&mut self) {
+        loop {
+            let value = self.parse_expression();
+            println!("{}", value);
+
+            match self.token.peek_token() {
+                Token::Semicolon => {
+                    self.token.next_token();
+                },
+                Token::EOC => break,
+                _ => panic!("Invalid terminator for expression"),
+            }
+        }
     }
     
 
@@ -116,9 +109,9 @@ impl<'a> Parser<'a> {
     fn parse_factor(&mut self) -> i32 {
         let value: i32;
         
-        let token1 = self.token.peek_token();
+        let token = self.token.peek_token();
 
-        match self.token.peek_token() {
+        match token {
             Token::Identifier(name) => {
                 self.token.next_token();
                 value = *self.identifier_table.get(&name).expect("Variable does not exist");

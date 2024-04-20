@@ -134,17 +134,5 @@ impl<'a> Tokenizer<'a> {
     }
 }
 
-fn main() {
-
-    let mut tokenizer = Tokenizer::new("computation var i<-2; i+1.");
-    loop {
-        let token = tokenizer.next_token();
-        println!("{:?}", token);
-        if token == Token::EOC {
-            break;
-        }
-
-    }
-}
 
 

@@ -5,16 +5,9 @@ use std::io;
 use parser::Parser;
 
 fn main() {
-    loop {
         let input = get_input();
-
-        if input == "q\n" {
-            break;
-        }
-
         let mut computation = Parser::new(input.trim());
-        println!("result: {}\n", computation.parse_computation());
-    }
+        computation.parse_computation();
 }
 
 fn get_input() -> String {
