@@ -1,5 +1,5 @@
 ## Warmup 1
-A simple interpreter that recursively parses arithmetic integer expressions with operate precedence and nesting complexity. The interpreter can compute multiple computations, with each computation ending with a period. Ignores whitespace.
+A simple interpreter that recursively parses arithmetic integer expressions with operator precedence and nesting complexity. The interpreter can compute multiple computations, with each computation ending with a period. Ignores whitespace.
 
 ```2*2+20  +10  *((1000/4) - 50).       100 + (10*2)+3.``` prints **2024** and **123**
 
