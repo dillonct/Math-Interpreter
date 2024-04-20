@@ -19,7 +19,6 @@ impl<'a> Parser<'a> {
         self.match_token(Token::Computation);
         self.parse_variables();
         self.parse_multiple_expressions();
-        self.match_token(Token::EOC); 
     }
 
     fn parse_multiple_expressions(&mut self) {
@@ -27,10 +26,8 @@ impl<'a> Parser<'a> {
             let value = self.parse_expression();
             println!("{}", value);
 
-            match self.token.peek_token() {
-                Token::Semicolon => {
-                    self.token.next_token();
-                },
+            match self.token.next_token() {
+                Token::Semicolon => (),
                 Token::EOC => break,
                 _ => panic!("Invalid terminator for expression"),
             }
