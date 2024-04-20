@@ -18,11 +18,34 @@ impl<'a> Parser<'a> {
     pub fn parse_computation(&mut self) -> i32 {
         self.match_token(Token::Computation);
         self.parse_variables();
-        let computation = self.parse_expression();
-        self.match_token(Token::EOC);
+        // let computation = self.parse_expression();
+        let computation = self.parse_multiple_expressions();
+        //self.match_token(Token::EOC);
 
         computation
     }
+
+    fn parse_multiple_expressions(&mut self) -> i32 {
+        let mut value = self.parse_expression();
+        println!("{}", value);
+
+        loop {
+            match self.token.peek_token() {
+                Token::Semicolon => { 
+                    self.token.next_token();
+                    value = self.parse_expression();
+                    println!("{}", value);
+                },
+                _ => break,
+            }
+
+        }
+
+        self.match_token(Token::EOC);
+
+        value
+    }
+    
 
     fn parse_variables(&mut self) {
         loop {
@@ -94,7 +117,6 @@ impl<'a> Parser<'a> {
         let value: i32;
         
         let token1 = self.token.peek_token();
-        println!("james is praying on my downfall: {:?}", token1);
 
         match self.token.peek_token() {
             Token::Identifier(name) => {
