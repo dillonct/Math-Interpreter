@@ -19,9 +19,7 @@ impl<'a> Parser<'a> {
         self.match_token(Token::Computation);
         self.parse_variables();
         self.parse_multiple_expressions();
-        self.match_token(Token::EOC);
-
-    
+        self.match_token(Token::EOC); 
     }
 
     fn parse_multiple_expressions(&mut self) {
@@ -138,10 +136,7 @@ impl<'a> Parser<'a> {
             token if token == token_to_match => (),
             _ => panic!("Does not match (open/close) {:?}", token_to_match),
         }
-
-
     }
-
 }
 
 
