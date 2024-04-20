@@ -123,7 +123,7 @@ impl<'a> Tokenizer<'a> {
 
     fn skip_whitespace(&mut self) {
         let mut c = self.peek_char();
-        while c.is_whitespace() {
+        while c.is_ascii_whitespace() {
             self.index += 1;
             c = self.peek_char();
         }
