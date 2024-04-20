@@ -135,17 +135,3 @@ impl<'a> Tokenizer<'a> {
 }
 
 
-fn main() {
-    let input = String::from("hello + - * / 53      <- ( ) var computation.");
-    let mut idk = Tokenizer::new(&input);
-    let mut i = 0;
-    loop {
-        let token = idk.next_token();
-        println!("{}: {:?}", i, token);
-        i += 1;
-        if token == Token::EOC {
-            break;
-        }        
-
-    }
-}
