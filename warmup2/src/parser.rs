@@ -27,7 +27,6 @@ impl<'a> Parser<'a> {
     fn parse_expression(&mut self) -> i32 {
         let mut value = self.parse_term();
         loop {
-            println!("sdfsfdsf");
             let token = self.token.peek_token();
             match token {
                 Token::Plus => {
@@ -76,6 +75,7 @@ impl<'a> Parser<'a> {
 
         match token {
             Token::Number(digits) => {
+                self.token.next_token();
                 value = digits as i32;
             },
             Token::Openpar => {
@@ -92,10 +92,12 @@ impl<'a> Parser<'a> {
     }
 
     fn match_token(&mut self, token_to_match: Token) {
-        match self.token.peek_token() {
+        match self.token.next_token() {
             token if token == token_to_match => (),
             _ => panic!("Does not close {:?}", token_to_match),
         }
+
+
     }
 
 }
