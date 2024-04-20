@@ -16,12 +16,36 @@ impl<'a> Parser<'a> {
     }
 
     pub fn parse_computation(&mut self) -> i32 {
+        self.match_token(Token::Computation);
+        self.parse_variables();
         let computation = self.parse_expression();
-        let test = self.token.peek_token();
         self.match_token(Token::EOC);
 
         computation
     }
+
+    fn parse_variables(&mut self) {
+        loop {
+            match self.token.next_token() {
+                Token::Variable => self.parse_assignment(),
+                _ => break,
+            }
+        }
+    }
+
+    fn parse_assignment(&mut self) {
+        match self.token.next_token() {
+            Token::Identifier(string) => {
+                self.match_token(Token::Assignment);
+                let value = self.parse_expression();
+                println!("{}", value);
+                self.identifier_table.insert(string, value);
+                self.match_token(Token::Semicolon);
+            },
+            _ => panic!("Expected an identifier"),
+        }
+    }
+
 
     fn parse_expression(&mut self) -> i32 {
         let mut value = self.parse_term();
@@ -73,6 +97,10 @@ impl<'a> Parser<'a> {
         let token = self.token.peek_token();
 
         match token {
+            Token::Identifier(name) => {
+                self.token.next_token();
+                value = *self.identifier_table.get(&name).expect("Variable does not exist");
+            },
             Token::Number(digits) => {
                 self.token.next_token();
                 value = digits as i32;
@@ -93,7 +121,7 @@ impl<'a> Parser<'a> {
     fn match_token(&mut self, token_to_match: Token) {
         match self.token.next_token() {
             token if token == token_to_match => (),
-            _ => panic!("Does not close {:?}", token_to_match),
+            _ => panic!("Does not match (open/close) {:?}", token_to_match),
         }
 
 
