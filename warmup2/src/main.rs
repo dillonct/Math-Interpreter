@@ -6,6 +6,10 @@ use parser::Parser;
 
 fn main() {
         let input = get_input();
+        if input == "\n" {
+            panic!("Input is empty");
+        }
+
         let mut computation = Parser::new(input);
         computation.parse_computation();
 }
