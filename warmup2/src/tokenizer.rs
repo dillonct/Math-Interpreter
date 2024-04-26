@@ -24,6 +24,9 @@ pub struct Tokenizer<'a> {
 impl<'a> Tokenizer<'a> {
     // create an instance
     pub fn new(input: &'a str) -> Self {
+        // NOTE: could pass ownership of string input to tokenizer
+        // convert string to byte vector
+        // store this as an attribute
         Self {
             input,
             index: 0,
