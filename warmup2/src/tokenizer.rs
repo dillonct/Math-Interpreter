@@ -74,7 +74,7 @@ impl<'a> Tokenizer<'a> {
     fn peek_char(&self) -> char {
         self.input.chars().nth(self.index).unwrap_or('\0')
     }
-    
+
     fn next_char(&mut self) -> char {
         let c = self.input.chars().nth(self.index).unwrap_or('\0');
         self.index += 1;
@@ -117,10 +117,10 @@ impl<'a> Tokenizer<'a> {
             _ => Token::Identifier(name),
         }
     }
-    
+
     fn get_number(&mut self) -> Token {
         let value = self.consume_number();
-        
+
         Token::Number(value.parse::<i32>().expect("Cannot unwrap Result in get_number()"))
     }
 
