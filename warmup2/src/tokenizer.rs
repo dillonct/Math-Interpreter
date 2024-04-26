@@ -16,19 +16,16 @@ pub enum Token {
     EOC,
 }
 
-pub struct Tokenizer<'a> {
-    input: &'a str,
+pub struct Tokenizer {
+    input: Vec<u8>,
     index: usize,
 }
 
-impl<'a> Tokenizer<'a> {
+impl Tokenizer {
     // create an instance
-    pub fn new(input: &'a str) -> Self {
-        // NOTE: could pass ownership of string input to tokenizer
-        // convert string to byte vector
-        // store this as an attribute
+    pub fn new(input: String) -> Self {
         Self {
-            input,
+            input: input.into_bytes(),
             index: 0,
         }
     }
@@ -36,7 +33,7 @@ impl<'a> Tokenizer<'a> {
     pub fn next_token(&mut self) -> Token {
         self.skip_whitespace();
 
-        let ch = match self.peek_char() {
+        let token = match self.peek_char() {
             '+' => Token::Plus,
             '-' => Token::Minus,
             '*' => Token::Times,
@@ -60,7 +57,7 @@ impl<'a> Tokenizer<'a> {
         };
 
         self.next_char();
-        ch
+        token
     }
 
     pub fn peek_token(&mut self) -> Token {
@@ -72,11 +69,11 @@ impl<'a> Tokenizer<'a> {
     }
 
     fn peek_char(&self) -> char {
-        self.input.chars().nth(self.index).unwrap_or('\0')
+        self.input[self.index] as char
     }
 
     fn next_char(&mut self) -> char {
-        let c = self.input.chars().nth(self.index).unwrap_or('\0');
+        let c = self.peek_char();
         self.index += 1;
 
         c 
@@ -93,7 +90,7 @@ impl<'a> Tokenizer<'a> {
 
         }
 
-        self.input[start_index..self.index].to_string()
+        String::from_utf8_lossy(&self.input[start_index..self.index]).to_string()
     }
 
     fn consume_number(&mut self) -> String {
@@ -106,7 +103,7 @@ impl<'a> Tokenizer<'a> {
 
         }
 
-        self.input[start_index..self.index].to_string()
+        String::from_utf8_lossy(&self.input[start_index..self.index]).to_string()
     }
 
     fn get_identifier(&mut self) -> Token {

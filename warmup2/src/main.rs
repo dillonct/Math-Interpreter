@@ -6,7 +6,7 @@ use parser::Parser;
 
 fn main() {
         let input = get_input();
-        let mut computation = Parser::new(input.trim());
+        let mut computation = Parser::new(input);
         computation.parse_computation();
 }
 

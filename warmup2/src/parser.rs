@@ -1,14 +1,14 @@
 use crate::tokenizer::{Token, Tokenizer};
 use std::collections::HashMap;
 
-pub struct Parser<'a> {
-    token: Tokenizer<'a>,
+pub struct Parser {
+    token: Tokenizer,
     identifier_table: HashMap<String, i32>,
 
 }
 
-impl<'a> Parser<'a> {
-    pub fn new(input: &'a str) -> Self {
+impl Parser {
+    pub fn new(input: String) -> Self {
         Self {
             token: Tokenizer::new(input),
             identifier_table: HashMap::new(), 
